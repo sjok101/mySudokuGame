@@ -56,7 +56,7 @@ class sudokuSolver {
         char[][] answerBoard = null;
         while (!checkFinalSudoku(answerBoard)) {
             // first algorithm based off RNG
-            answerBoard = fillBoard(board);
+            answerBoard = fillRandomBoard(board);
 
             System.out.println(count + "...");
             count++;
@@ -66,24 +66,38 @@ class sudokuSolver {
 
     }
 
-    // randomly fills in all numbers
-    public static char[][] fillBoard(char[][] board) {
-        char[][] ret = new char[9][9];
+    // Backtracking implmentation goals.
+    // 1. Take the next available number in the sequence and Check the Row, Column,
+    // and Block with it
+    // 2. If it returns true, then add it into the board and go the next emmpty
+    // cell.
+    // The index for the next available number will be reset to the beginning of the
+    // available sequence.
+    // 3. If it returns false, back track to the prior cell and then remove that
+    // value and
+    // repeat step 1 with the next number.
+    // 3.. If the index is at the beginning, just try the next value without
+    // backtracking.
 
-        for (int i = 0; i < board.length; i++) {
-            char[] availNums = getAvailNums(board[i]);
-            for (int j = 0; j < board.length; j++) {
-                if (board[i][j] == '.') {
-                    int rand = getRandInLength(availNums);
-                    ret[i][j] = availNums[rand];
-                    availNums = removeChar(rand, availNums);
-                } else {
-                    ret[i][j] = board[i][j];
-                }
-            }
-        }
-        return ret;
-    }
+    // NOTICE, THIS FUNCTION TAKES TOO MUCH TIME TO FINISH. IMPLEMENT BACKTRACKING
+    // randomly fills in all numbers
+    // public static char[][] fillRandomBoard(char[][] board) {
+    // char[][] ret = new char[9][9];
+
+    // for (int i = 0; i < board.length; i++) {
+    // char[] availNums = getAvailNums(board[i]);
+    // for (int j = 0; j < board.length; j++) {
+    // if (board[i][j] == '.') {
+    // int rand = getRandInLength(availNums);
+    // ret[i][j] = availNums[rand];
+    // availNums = removeChar(rand, availNums);
+    // } else {
+    // ret[i][j] = board[i][j];
+    // }
+    // }
+    // }
+    // return ret;
+    // }
 
     public static char[] removeChar(int index, char[] charArray) {
         char[] ret = new char[charArray.length - 1];
