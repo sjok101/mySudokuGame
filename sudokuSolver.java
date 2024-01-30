@@ -79,25 +79,56 @@ class sudokuSolver {
     // 3.. If the index is at the beginning, just try the next value without
     // backtracking.
 
+    public static char[][] backTrackSolution(char[][] board) {
+        while (!checkFinalSudoku(board)) {
+            // create structure to use the logic on, i.e index counters and etc, for loop vs
+            // while
+            if (isValidSudoku(board)) {
+                addToBoard(board);
+            } else {
+                backTrackBoard(board);
+            }
+        }
+        return board; // solved board with final answer
+    }
+
+    public static char[][] addToBoard(char[][] board) {
+        // adds number from the numsequence into the board.
+        // when it reaches the end of the sequence, reset the index
+        // check it by checking if isValidSudoku is true and numsequence is at 9, if so,
+        // reset the index
+        // else, do nothing so that it can proceed to backTrackBoard(board);
+        return null;
+    }
+
+    public static char[][] backTrackBoard(char[][] board) {
+        // 2 cases
+        // when there is a next available number in the sequence, just remove the number
+        // and update the number index
+        // if there is no next available number in the sequence, remove the current
+        // element and the element before and place the index after the removed element
+        return null;
+    }
+
     // NOTICE, THIS FUNCTION TAKES TOO MUCH TIME TO FINISH. IMPLEMENT BACKTRACKING
     // randomly fills in all numbers
-    // public static char[][] fillRandomBoard(char[][] board) {
-    // char[][] ret = new char[9][9];
+    public static char[][] fillRandomBoard(char[][] board) {
+        char[][] ret = new char[9][9];
 
-    // for (int i = 0; i < board.length; i++) {
-    // char[] availNums = getAvailNums(board[i]);
-    // for (int j = 0; j < board.length; j++) {
-    // if (board[i][j] == '.') {
-    // int rand = getRandInLength(availNums);
-    // ret[i][j] = availNums[rand];
-    // availNums = removeChar(rand, availNums);
-    // } else {
-    // ret[i][j] = board[i][j];
-    // }
-    // }
-    // }
-    // return ret;
-    // }
+        for (int i = 0; i < board.length; i++) {
+            char[] availNums = getAvailNums(board[i]);
+            for (int j = 0; j < board.length; j++) {
+                if (board[i][j] == '.') {
+                    int rand = getRandInLength(availNums);
+                    ret[i][j] = availNums[rand];
+                    availNums = removeChar(rand, availNums);
+                } else {
+                    ret[i][j] = board[i][j];
+                }
+            }
+        }
+        return ret;
+    }
 
     public static char[] removeChar(int index, char[] charArray) {
         char[] ret = new char[charArray.length - 1];
@@ -166,11 +197,11 @@ class sudokuSolver {
         if (board == null) {
             return false;
         }
-        // for (int i = 0; i < board.length; i++) {
-        // for (int j = 0; j < board.length; j++)
-        // if (board[i][j] == '.')
-        // return false;
-        // }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++)
+                if (board[i][j] == '.')
+                    return false;
+        }
 
         // check if rows are 1-9
         if (!checkRowsHasNums(board))
@@ -321,14 +352,13 @@ class sudokuSolver {
         // }
         // System.out.println();
         // System.out.println(availNums.length);
-
+        char[] availNums = getAvailNums(testBoard[0]);
         // availNums = removeChar(2, availNums);
-        // System.out.println(availNums.length);
+        System.out.println(availNums.length);
 
-        // for (int i = 0; i < availNums.length; i++) {
-        // System.out.print(availNums[i]);
-        // }
-        solveSudoku(testBoard);
+        for (int i = 0; i < availNums.length; i++) {
+            System.out.print(availNums[i]);
+        }
 
     }
 
