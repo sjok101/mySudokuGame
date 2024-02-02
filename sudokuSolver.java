@@ -92,6 +92,18 @@ class sudokuSolver {
         return board; // solved board with final answer
     }
 
+    // structure copy the board to a final answer board. use the og board to
+    // retrieve avail nums and index positions. do not use the final answer board,
+    // that is for adding and deleting elements from
+    // focus on 1 row at a time
+    // take the available numbers from that row
+    // also take the index of the available numbers as a char[] to save our
+    // positions
+    // important note, do not remove or add numbers to the available number array,
+    // just edit the index pointer
+    // same thing goes for the index position array
+    //
+
     public static char[][] addToBoard(char[][] board) {
         // adds number from the numsequence into the board.
         // when it reaches the end of the sequence, reset the index
