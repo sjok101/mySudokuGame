@@ -10,6 +10,12 @@ import java.util.Random;
 class sudokuSolver {
 
     private static char[] numSequence = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    static int numIndex = 0;
+    static int boardIndex = 0;
+    static char[] availNumbers;
+    static int[] boardIndexSet;
+    static int boardX;
+    static int boardY;
 
     public static boolean isValidSudoku(char[][] board) {
         if (!checkDupesInRows(board))
@@ -66,17 +72,35 @@ class sudokuSolver {
 
     }
 
+    public static int[] getBoardIndexSet(char[] row, int length) {
+        int ret[] = new int[length];
+        int count = 0;
+        for (int i = 0; i < row.length; i++) {
+            if (row[i] == '.') {
+                ret[count] = i;
+                count++;
+            }
+        }
+
+        return ret;
+    }
+
     public static char[][] backTrackSolution(char[][] board) {
 
         char[][] answerBoard = copyBoard(board);
+        availNumbers = getAvailNums(board[0]);
+        boardIndexSet = getBoardIndexSet(board[0], availNumbers.length);
+        boardX = 0;
+        boardY = 0;
 
         while (!checkFinalSudoku(board)) {
 
             if (isValidSudoku(board)) {
-                addToBoard(board);
+                addToBoard(board, answerBoard);
             } else {
-                backTrackBoard(board);
+                backTrackBoard(board, answerBoard);
             }
+            System.out.println(boardX);
         }
         return board; // solved board with final answer
     }
@@ -91,44 +115,109 @@ class sudokuSolver {
         return ret;
     }
 
-    public static char[][] addToBoard(char[][] board) {
+    public static char[][] addToBoard(char[][] board, char[][] answerBoard) {
 
         // if index equals the length of availnumbers
         // reset the index
         // increment rows by 1
         // update availNumbers with new array set
+        if (numIndex >= availNumbers.length) {
+            // System.out.println("yay");
 
+            // System.out.println(" here is num " + numIndex + " and avail: " +
+            // availNumbers.length);
+            backTrackBoard(board, answerBoard);
+        }
+        // System.out.println("length is " + boardIndexSet.length + ", index is: " +
+        // boardIndex);
+        if (boardIndex >= boardIndexSet.length) {
+            // System.out.println("rest");
+            boardIndex = 0;
+            numIndex = 0;
+            boardX++;
+            // System.out.println("board x" + boardX);
+            availNumbers = getAvailNums(board[boardX]);
+            boardIndexSet = getBoardIndexSet(board[boardX], availNumbers.length);
+        }
         // if row equal 10 just return board as is
+        if (boardX == 10) {
+            return board;
+        }
 
         // case 1
         // add next number to the board at the indicated index position
         // increase index position for both avail numbers and the board by 1
-        return null;
+        int tempX = boardX;
+        int tempY = boardIndexSet[boardIndex];
+        // System.out.println(tempX);
+        // System.out.println(tempY);
+        answerBoard[tempX][tempY] = availNumbers[numIndex];
+        boardIndex++;
+        numIndex++;
+
+        return answerBoard;
     }
 
-    public static char[][] backTrackBoard(char[][] board) {
+    public static char[][] backTrackBoard(char[][] board, char[][] answerBoard) {
 
         // case 1
         // decrease index position for the board by 1
         // remove the number on the board at this index
+
+        boardIndex--;
+        // System.out.println(boardIndex);
+        answerBoard[boardX][boardIndexSet[boardIndex]] = '.';
 
         // case 2
         // if the index position for available numbers is equal to its length
         // decrease index position for the board by 1
         // remove the number on the board at this index
+        if (numIndex >= availNumbers.length) {
+            boardIndex--;
 
-        // decrease the index position by 1 again
-        // remove and record the number on the board at the updated index
-        // with the record, find the index position on the available numbers array
-        // update the index position for available numbers when found and add 1
+            // if the 2nd decrement makes the position less than 0
+            // decrease the row by 1
+            // update the avail numbers with function
+            // set and remove the last indexed element
+            // find the removed element and update the index in the avail numbers
+            if (boardIndex < 0) {
+                boardX--;
 
-        // if the 2nd decrement makes the position less than 0
-        // decrease the row by 1
-        // update the avail numbers with function
-        // set and remove the last indexed element
-        // find the removed element and update the index in the avail numbers
+                boardIndex = answerBoard.length - 1;
+                // System.out.println(boardX);
+                availNumbers = getAvailNums(board[boardX]);
+                boardIndexSet = getBoardIndexSet(board[boardX], availNumbers.length);
+                char tempChar = answerBoard[boardX][boardIndex];
+                answerBoard[boardX][boardIndex] = '.';
 
-        return null;
+                for (int i = 0; i < availNumbers.length; i++) {
+                    if (availNumbers[i] == tempChar) {
+                        numIndex = i + 1;
+                        break;
+                    }
+                }
+
+            } else {
+                // decrease the index position by 1 again
+                // remove and record the number on the board at the updated index
+                // with the record, find the index position on the available numbers array
+                // update the index position for available numbers when found and add 1
+                // System.out.println(boardX);
+
+                char tempChar = answerBoard[boardX][boardIndexSet[boardIndex]];
+                answerBoard[boardX][boardIndexSet[boardIndex]] = '.';
+
+                for (int i = 0; i < availNumbers.length; i++) {
+                    if (availNumbers[i] == tempChar) {
+                        numIndex = i + 1;
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        return answerBoard;
     }
 
     // NOTICE, THIS FUNCTION TAKES TOO MUCH TIME TO FINISH. IMPLEMENT BACKTRACKING
@@ -374,12 +463,20 @@ class sudokuSolver {
         // System.out.println();
         // System.out.println(availNums.length);
         char[] availNums = getAvailNums(testBoard[0]);
+        int[] indexSet = getBoardIndexSet(testBoard[0], availNums.length);
         // availNums = removeChar(2, availNums);
         System.out.println(availNums.length);
 
         for (int i = 0; i < availNums.length; i++) {
             System.out.print(availNums[i]);
         }
+        System.out.println();
+        System.out.println('h');
+        for (int i = 0; i < indexSet.length; i++) {
+            System.out.print(indexSet[i]);
+        }
+
+        char finalAnswer[][] = backTrackSolution(testBoard);
 
     }
 
