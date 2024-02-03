@@ -66,23 +66,12 @@ class sudokuSolver {
 
     }
 
-    // Backtracking implmentation goals.
-    // 1. Take the next available number in the sequence and Check the Row, Column,
-    // and Block with it
-    // 2. If it returns true, then add it into the board and go the next emmpty
-    // cell.
-    // The index for the next available number will be reset to the beginning of the
-    // available sequence.
-    // 3. If it returns false, back track to the prior cell and then remove that
-    // value and
-    // repeat step 1 with the next number.
-    // 3.. If the index is at the beginning, just try the next value without
-    // backtracking.
-
     public static char[][] backTrackSolution(char[][] board) {
+
+        char[][] answerBoard = copyBoard(board);
+
         while (!checkFinalSudoku(board)) {
-            // create structure to use the logic on, i.e index counters and etc, for loop vs
-            // while
+
             if (isValidSudoku(board)) {
                 addToBoard(board);
             } else {
@@ -92,33 +81,53 @@ class sudokuSolver {
         return board; // solved board with final answer
     }
 
-    // structure copy the board to a final answer board. use the og board to
-    // retrieve avail nums and index positions. do not use the final answer board,
-    // that is for adding and deleting elements from
-    // focus on 1 row at a time
-    // take the available numbers from that row
-    // also take the index of the available numbers as a char[] to save our
-    // positions
-    // important note, do not remove or add numbers to the available number array,
-    // just edit the index pointer
-    // same thing goes for the index position array
-    //
+    public static char[][] copyBoard(char[][] board) {
+        char[][] ret = new char[board.length][board.length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                ret[i][j] = board[i][j];
+            }
+        }
+        return ret;
+    }
 
     public static char[][] addToBoard(char[][] board) {
-        // adds number from the numsequence into the board.
-        // when it reaches the end of the sequence, reset the index
-        // check it by checking if isValidSudoku is true and numsequence is at 9, if so,
+
+        // if index equals the length of availnumbers
         // reset the index
-        // else, do nothing so that it can proceed to backTrackBoard(board);
+        // increment rows by 1
+        // update availNumbers with new array set
+
+        // if row equal 10 just return board as is
+
+        // case 1
+        // add next number to the board at the indicated index position
+        // increase index position for both avail numbers and the board by 1
         return null;
     }
 
     public static char[][] backTrackBoard(char[][] board) {
-        // 2 cases
-        // when there is a next available number in the sequence, just remove the number
-        // and update the number index
-        // if there is no next available number in the sequence, remove the current
-        // element and the element before and place the index after the removed element
+
+        // case 1
+        // decrease index position for the board by 1
+        // remove the number on the board at this index
+
+        // case 2
+        // if the index position for available numbers is equal to its length
+        // decrease index position for the board by 1
+        // remove the number on the board at this index
+
+        // decrease the index position by 1 again
+        // remove and record the number on the board at the updated index
+        // with the record, find the index position on the available numbers array
+        // update the index position for available numbers when found and add 1
+
+        // if the 2nd decrement makes the position less than 0
+        // decrease the row by 1
+        // update the avail numbers with function
+        // set and remove the last indexed element
+        // find the removed element and update the index in the avail numbers
+
         return null;
     }
 
