@@ -220,8 +220,6 @@ class sudokuSolver {
         return answerBoard;
     }
 
-    // NOTICE, THIS FUNCTION TAKES TOO MUCH TIME TO FINISH. IMPLEMENT BACKTRACKING
-    // randomly fills in all numbers
     public static char[][] fillRandomBoard(char[][] board) {
         char[][] ret = new char[9][9];
 
@@ -313,16 +311,13 @@ class sudokuSolver {
                     return false;
         }
 
-        // check if rows are 1-9
         if (!checkRowsHasNums(board))
             return false;
 
-        // check if columns are 1-9
         char[][] transpose = transpose(board);
         if (!checkRowsHasNums(transpose))
             return false;
 
-        // check if blocks are 1-9
         char[][] blocksToRows = blocksToRows(board);
         if (!checkRowsHasNums(blocksToRows))
             return false;
@@ -361,7 +356,6 @@ class sudokuSolver {
         return ret;
     }
 
-    // for when checking blocks
     public static char[][] blocksToRows(char[][] board) {
         // converts 3x3 blocks into 1x9 rows until 9x9
         char[][] ret = new char[9][9];
@@ -436,32 +430,9 @@ class sudokuSolver {
         }
     }
 
+    // test here
     public static void main(String[] args) {
         char[][] testBoard = createBoard();
-        // char[][] newBoard = createTestBoard();
-        // char[][] tpose = transpose(testBoard);
-        // char[][] btr = blocksToRows(testBoard);
-        // System.out.println("Sudoku Board:");
-        // printBoard(testBoard);
-        // System.out.println("====================================================");
-        // System.out.println("Transpose:");
-        // printBoard(tpose);
-        // System.out.println("====================================================");
-        // System.out.println("Blocks To Rows:");
-        // printBoard(btr);
-
-        // System.out.println(checkFinalSudoku(newBoard));
-        // // solveSudoku(newBoard);
-
-        // System.out.println(isValidSudoku(testBoard));
-
-        // char[] availNums = getAvailNums(testBoard[0]);
-
-        // for (int i = 0; i < availNums.length; i++) {
-        // System.out.print(availNums[i]);
-        // }
-        // System.out.println();
-        // System.out.println(availNums.length);
         char[] availNums = getAvailNums(testBoard[0]);
         int[] indexSet = getBoardIndexSet(testBoard[0], availNums.length);
         // availNums = removeChar(2, availNums);
